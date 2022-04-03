@@ -1,0 +1,21 @@
+name: deploy-auth
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'auth/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run docker build and push to the docker hub command
+        run: cd auth && docker build -t amolbkgunjal/auth .
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD        
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker push amolbkgunjal/auth
