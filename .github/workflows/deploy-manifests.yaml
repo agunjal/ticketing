@@ -18,4 +18,4 @@
 #       - name: doctl load the config of kubernetes in git hub container and set the digital ocean context
 #         run: doctl kubernetes cluster kubeconfig save ticketing
 #       - name: apply the deployments
-#         run: kubectl apply -f infra/k8s
+#         run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
