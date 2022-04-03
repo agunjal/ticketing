@@ -1,0 +1,21 @@
+name: deploy-manifests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'infra/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: doctl load the config of kubernetes in git hub container and set the digital ocean context
+        run: doctl kubernetes cluster kubeconfig save ticketing
+      - name: apply the deployments
+        run: kubectl apply -f infra/k8s
