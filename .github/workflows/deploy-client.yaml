@@ -1,0 +1,30 @@
+name: deploy-client
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'client/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run docker build command
+        run: cd client && docker build -t amolbkgunjal/client .
+      - name: login to docker hub
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD        
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Run docker push command to push into the docker hub
+        run: docker push amolbkgunjal/client
+#       - uses: digitalocean/action-doctl@v2
+#         with:
+#           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+#       - name: doctl load the config of kubernetes in git hub container and set the digital ocean context
+#         run: doctl kubernetes cluster kubeconfig save ticketing
+#       - name: restart the deployment
+#         run: kubectl rollout restart deployment client-depl
