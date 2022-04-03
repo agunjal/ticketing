@@ -5,17 +5,19 @@ on:
     branches:
       - main
     paths:
-      - 'auth/**
+      - 'auth/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run docker build and push to the docker hub command
+      - name: Run docker build command
         run: cd auth && docker build -t amolbkgunjal/auth .
+      - name: login to docker hub
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD        
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Run docker push command to push into the docker hub
         run: docker push amolbkgunjal/auth
